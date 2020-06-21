@@ -59,8 +59,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const theTetrominoes = [lTetromino, zTetromino, tTetromino, oTetromino, iTetromino]
     
-    const currentPosition = 4
-    const currentRotation = 0
+    let currentPosition = 4
+    let currentRotation = 0
 
     // Randomly select Tetromino
     const random = Math.floor(Math.random()*theTetrominoes.length)
@@ -80,5 +80,13 @@ document.addEventListener('DOMContentLoaded', () => {
         })
     }
 
-    draw()
+    // Create interval for movement down
+    timerId = setInterval(moveDown, 1000) // 1000 == 1000ms == 1s
+    
+    // Function to move down
+    function moveDown() {
+        undraw()
+        currentPosition += width
+        draw()
+    }
 })
