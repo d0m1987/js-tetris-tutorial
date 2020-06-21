@@ -82,14 +82,39 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Create interval for movement down
-    timerId = setInterval(moveDown, 250) // 1000 == 1000ms == 1s
+    timerId = setInterval(moveDown, 1000) // 1000 == 1000ms == 1s
     
+    // Assign key strokes to function calls
+    function control(e) {
+        if (e.keyCode === 37) {
+            moveLeft()
+        } else if (e.keyCode === 38) {
+            rotate()
+        } else if (e.keyCode === 39) {
+            moveRight()
+        } else if (e.keyCode === 40) {
+            moveDown()
+        }
+    }
+    document.addEventListener('keyup', control)
+
     // Function to move down
     function moveDown() {
         undraw()
         currentPosition += width
         draw()
         freeze()
+    }
+
+    // Function to rotate
+    function rotate() {
+        undraw()
+        currentRotation ++
+        if (currentRotation == current.length){
+            currentRotation = 0
+        }
+        current = theTetrominoes[random][currentRotation]
+        draw()
     }
 
     // Freeze function => if space is taken e.g. at the end of the display
@@ -113,6 +138,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (current.some(index => squares[currentPosition + index].classList.contains(takenClassName))){
             currentPosition += 1
+        }
+
+        draw()
+    }
+
+    // move the Tetramino left until it is at the left edge
+    function moveRight() {
+        undraw()
+        const isAtRightEdge = current.some(index => (currentPosition + index) % width === width - 1)
+
+        if (!isAtRightEdge) currentPosition += 1
+
+        if (current.some(index => squares[currentPosition + index].classList.contains(takenClassName))){
+            currentPosition -= 1
         }
 
         draw()
