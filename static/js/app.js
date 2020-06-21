@@ -14,6 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const scoreDisplay = document.querySelector('#score')
     const startBtn = document.querySelector('#start-button')
 
+    const tetrominoClassName = 'tetromino'
+
     console.log(grid);
     console.log(squares);
     console.log(scoreDisplay);
@@ -67,7 +69,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // draw current tetromino
     function draw() {
         current.forEach(index => {
-            squares[currentPosition + index].classList.add('tetromino')
+            squares[currentPosition + index].classList.add(tetrominoClassName)
+        })
+    }
+
+    // undraw current tetromino
+    function undraw() {
+        current.forEach(index => {
+            squares[currentPosition + index].classList.remove(tetrominoClassName)
         })
     }
 
