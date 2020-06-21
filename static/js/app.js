@@ -103,4 +103,18 @@ document.addEventListener('DOMContentLoaded', () => {
             draw()
         }
     }
+
+    // move the Tetramino left until it is at the left edge
+    function moveLeft() {
+        undraw()
+        const isAtLeftEdge = current.some(index => (currentPosition + index) % width === 0)
+
+        if (!isAtLeftEdge) currentPosition -= 1
+
+        if (current.some(index => squares[currentPosition + index].classList.contains(takenClassName))){
+            currentPosition += 1
+        }
+
+        draw()
+    }
 })
