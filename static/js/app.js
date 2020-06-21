@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const startBtn = document.querySelector('#start-button')
 
     const tetrominoClassName = 'tetromino'
+    const takenClassName = 'taken'
 
     console.log(grid);
     console.log(squares);
@@ -63,8 +64,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentRotation = 0
 
     // Randomly select Tetromino
-    const random = Math.floor(Math.random()*theTetrominoes.length)
-    const current = theTetrominoes[random][currentRotation]
+    let random = Math.floor(Math.random()*theTetrominoes.length)
+    let current = theTetrominoes[random][currentRotation]
 
     // draw current tetromino
     function draw() {
@@ -81,12 +82,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Create interval for movement down
-    timerId = setInterval(moveDown, 1000) // 1000 == 1000ms == 1s
+    timerId = setInterval(moveDown, 250) // 1000 == 1000ms == 1s
     
     // Function to move down
     function moveDown() {
         undraw()
         currentPosition += width
         draw()
+        freeze()
+    }
+
+    // Freeze function => if space is taken e.g. at the end of the display
+    function freeze() {
+        if (current.some(index => squares[currentPosition + index + width].classList.contains(takenClassName))) {
+            current.forEach(index => squares[currentPosition + index].classList.add(takenClassName))
+            // start a new tetromino falling
+            random = Math.floor(Math.random()*theTetrominoes.length)
+            current = theTetrominoes[random][currentRotation]
+            currentPosition = 4
+            draw()
+        }
     }
 })
