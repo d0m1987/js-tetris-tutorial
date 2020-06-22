@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const startBtn = document.querySelector('#start-button')
     let currentPosition = 4
     let currentRotation = 0
+    let timerId = null
     
     // preview window
     const squaresPreview = document.querySelectorAll('.mini-grid div')
@@ -90,8 +91,18 @@ document.addEventListener('DOMContentLoaded', () => {
         })
     }
 
-    // Create interval for movement down
-    timerId = setInterval(moveDown, 1000) // 1000 == 1000ms == 1s
+    // start & pause button functionality
+    startBtn.addEventListener('click', () => {
+        if (timerId) {
+            clearInterval(timerId)
+            timerId = null
+        } else {
+            draw()
+            timerId = setInterval(moveDown, 1000) // 1000 == 1000ms == 1s
+            nextRandom = Math.floor(Math.random()*theTetrominoes.length)
+            displayShape()
+        }
+    })
     
     // Assign key strokes to function calls
     function control(e) {
