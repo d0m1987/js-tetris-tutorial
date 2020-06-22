@@ -12,14 +12,15 @@ document.addEventListener('DOMContentLoaded', () => {
      */
 
     // playfield
-    const grid = document.querySelector('.grid');
-    let squares = document.querySelectorAll('.grid div');
-    const width = 10;
+    const grid = document.querySelector('.grid')
+    let squares = Array.from(document.querySelectorAll('.grid div')) // Cast to array, because otherwise .splice further down won't work
+    const width = 10
     const scoreDisplay = document.querySelector('#score')
     const startBtn = document.querySelector('#start-button')
     let currentPosition = 4
     let currentRotation = 0
     let timerId = null
+    let score = 0
     
     // preview window
     const squaresPreview = document.querySelectorAll('.mini-grid div')
@@ -81,7 +82,6 @@ document.addEventListener('DOMContentLoaded', () => {
         current.forEach(index => {
             squares[currentPosition + index].classList.add(tetrominoClassName)
         })
-        displayShape()
     }
     
     // undraw current tetromino
@@ -175,6 +175,27 @@ document.addEventListener('DOMContentLoaded', () => {
             current = theTetrominoes[random][currentRotation]
             currentPosition = 4
             draw()
+            displayShape()
+            addScore()
+        }
+    }
+
+    // add score
+    function addScore() {
+        for (let i = 0; i < 199; i += width) {
+            const row = [i, i+1, i+2, i+3, i+4, i+5, i+6, i+7, i+8, i+9]
+
+            if (row.every(index => squares[index].classList.contains('taken'))) {
+                score += 10
+                scoreDisplay.innerHTML = score
+                row.forEach(index => {
+                    squares[index].classList.remove('taken')
+                    squares[index].classList.remove(tetrominoClassName)
+                })
+                const squaresRemoved = squares.splice(i, width)
+                squares = squaresRemoved.concat(squares)
+                squares.forEach(cell => grid.appendChild(cell))
+            }
         }
     }
 
