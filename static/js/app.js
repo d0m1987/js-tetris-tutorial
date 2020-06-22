@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    /*
-     * Variables & Constants 
+/*
+* Variables & Constants 
      */
 
     // playfield
@@ -13,11 +13,18 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentRotation = 0
     let timerId = null
     let score = 0
+    const colors = [
+        'orange',
+        'red',
+        'purple',
+        'green',
+        'blue'
+    ]
     
     // preview window
     const squaresPreview = document.querySelectorAll('.mini-grid div')
     const widthPreview = 4
-    let indexPreview = 0
+    const indexPreview = 0
     
     // fixed class names
     const tetrominoClassName = 'tetromino'
@@ -73,6 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function draw() {
         current.forEach(index => {
             squares[currentPosition + index].classList.add(tetrominoClassName)
+            squares[currentPosition + index].style.backgroundColor = colors[random]
         })
     }
     
@@ -80,6 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function undraw() {
         current.forEach(index => {
             squares[currentPosition + index].classList.remove(tetrominoClassName)
+            squares[currentPosition + index].style.backgroundColor = ''
         })
     }
 
@@ -184,6 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 row.forEach(index => {
                     squares[index].classList.remove('taken')
                     squares[index].classList.remove(tetrominoClassName)
+                    squares[index].style.backgroundColor = ''
                 })
                 const squaresRemoved = squares.splice(i, width)
                 squares = squaresRemoved.concat(squares)
@@ -218,9 +228,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // remove traces of Tetrominoes from preview window
         squaresPreview.forEach(square => {
             square.classList.remove(tetrominoClassName)
+            square.style.backgroundColor = ''
         })
         upNextTetrominoes[nextRandom].forEach(index => {
             squaresPreview[indexPreview + index].classList.add(tetrominoClassName)
+            squaresPreview[indexPreview + index].style.backgroundColor = colors[nextRandom]
         })
     }
 
