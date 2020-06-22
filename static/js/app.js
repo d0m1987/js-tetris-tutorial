@@ -1,11 +1,3 @@
-const lTetromino = 'firstShape'
-const zTetromino = 'secondShape'
-const oTetromino = 'thirdShape'
-const iTetromino = 'fourthShape'
-const tTetromino = 'fifthShape'
-
-const tetrominoes = [lTetromino, zTetromino, oTetromino, iTetromino, tTetromino]
-
 document.addEventListener('DOMContentLoaded', () => {
     /*
      * Variables & Constants 
@@ -177,6 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
             draw()
             displayShape()
             addScore()
+            gameOver()
         }
     }
 
@@ -196,6 +189,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 squares = squaresRemoved.concat(squares)
                 squares.forEach(cell => grid.appendChild(cell))
             }
+        }
+    }
+
+    // game over
+    function gameOver() {
+        if (current.some(index => squares[currentPosition + index].classList.contains('taken'))) {
+            clearInterval(timerId)
+            alert("Game Over \nYour points " + score)
         }
     }
 
